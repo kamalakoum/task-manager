@@ -1,0 +1,130 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+:root{
+    --gray : #6B7280;
+    --dark : #374151;
+    --darker : #1F2937;
+    --darkest : #111827;
+    --light : #EEE;
+    --pink : #8B5Cf6;
+}
+
+.page{
+    text-align: center;
+    margin-top: 20%;
+    transform: translateY(-200px);
+}
+
+body{
+    background-color: var(--dark);
+}
+
+h1{
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+#new-task-input{
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-right: 5rem;
+    font-size: 1.25rem;
+}
+
+.edit , .delete{
+    transform: translateY(9px);
+}
+
+#new-task-submit , .edit , .delete , .comp-tasks , .all-tasks{
+    padding: 1rem;
+    background-color: var(--gray);
+    font-size: 1.25rem;
+    border-radius: 1rem;
+}
+
+#new-task-submit:hover,.delete:hover , .edit:hover {
+    opacity: 0.8;
+}
+#new-task-submit:active , .edit:hover , .edit:hover {
+    opacity: 0.6;
+}
+
+.tasks-list{
+    padding: 1rem;
+}
+
+h2{
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--gray);
+    margin-bottom: 1rem;
+    transform: translateX(-180px);
+}
+
+#tasks .task{
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.task .content input.text{
+    color: var(--light);
+    font-size: 1.125rem;
+    padding: 1rem;
+    width: 25rem;
+    background-color: var(--gray);
+    border-radius: 1rem;
+}
+
+.task .content input.text:not(:read-only){
+    color: aqua;
+}
+
+.task .actions button{
+    cursor: pointer;
+    margin: 0 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.4s;
+}
+
+.task .actions button:hover {
+    opacity: 0.8;
+}
+
+.task .actions button:active {
+    opacity: 0.6;
+}
+
+.task .content .completed-task { 
+    transform: translateY(12px);
+    height: 40px;
+    width: 40px;
+    margin-right: 1rem;
+}
+
+.comp-tasks{
+    margin-right: 4.8rem;
+}
+
+.all-tasks{
+    margin-left: 4.8rem;
+}
+/* .comp-tasks , .all-tasks {
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--gray);
+    font-size: 1.125rem;
+    font-weight: 300;
+    background-color: var(--gray);
+    border-radius: 1rem;
+} */
