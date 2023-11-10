@@ -1,8 +1,16 @@
 let form = document.querySelector("#new-task-form");
 let input = document.querySelector("#new-task-input");
 let listEl = document.querySelector("#tasks");
+let compTasksBtn = document.querySelector(".comp-tasks");
+let allTasksBtn = document.querySelector(".all-tasks");
 
-form.addEventListener('submit', function(e) {
+// array to store all tasks
+let allTasksArr = [];
+
+// array to store tasks that are marked as completed
+let completedTaskArr = [];
+
+form.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const taskText = input.value;
@@ -11,7 +19,7 @@ form.addEventListener('submit', function(e) {
         return;
     }
 
-    // Create the HTML structure for a new task
+    // html structure for a new task
     const taskHtml = `
         <div class="task">
             <div class="content">
@@ -25,23 +33,35 @@ form.addEventListener('submit', function(e) {
         </div>
     `;
 
-    // Insert the new task HTML into the tasks list
+    // Inserting the new task HTML into the tasks div
     listEl.innerHTML += taskHtml;
 
-    // Reset the input field
+    // Adding task to allTasksArr
+    allTasksArr.push({ html: taskHtml, completed: false });
+    console.log(allTasksArr);
+    console.log(completedTaskArr);
+
     input.value = '';
 
-    // Add event listeners for edit and delete buttons to all tasks
+    // Call the function to attach event listeners to the new task
+    attachTaskEventListeners();
+});
+
+// Add event listeners for edit, delete, and completing tasks
+function attachTaskEventListeners() {
     const taskEls = listEl.querySelectorAll('.task');
-    taskEls.forEach(function(taskEl) {
+    for (let i = 0; i < taskEls.length; i++) {
+        console.log(taskEls)
+        const taskEl = taskEls[i];
         const editButton = taskEl.querySelector('.edit');
         const deleteButton = taskEl.querySelector('.delete');
-        const completedTask = taskEl.querySelector('.completed-task');
+        const completedTaskMark = taskEl.querySelector('.completed-task');
 
-        editButton.addEventListener('click', function() {
+        editButton.addEventListener('click', function () {
             // Toggle between edit and save 
             if (editButton.textContent === 'Edit') {
                 taskEl.querySelector('.text').readOnly = false;
+                console.log(taskEl.querySelector('.text').value)
                 editButton.textContent = 'Save';
             } else {
                 taskEl.querySelector('.text').readOnly = true;
@@ -49,17 +69,52 @@ form.addEventListener('submit', function(e) {
             }
         });
 
-        deleteButton.addEventListener('click', function() {
+        deleteButton.addEventListener('click', function () {
             taskEl.remove();
         });
 
-        completedTask.addEventListener('change', function() {
-            // Change the background color to mark task as completed
-            if (completedTask.checked) {
+        completedTaskMark.addEventListener('change', function () {
+            // Change the background color to mark the task as completed
+            const taskIndex = Array.from(taskEls).indexOf(taskEl);
+            if (completedTaskMark.checked) {
+                const taskHtml = taskEl.outerHTML;
+                completedTaskArr.push({ html: taskHtml, completed: true });
                 taskEl.querySelector('.text').style.backgroundColor = 'green';
+                allTasksArr[taskIndex].completed = true;
             } else {
-                taskEl.querySelector('.text').style.backgroundColor = ''; // Reset the background color
+                taskEl.querySelector('.text').style.backgroundColor = '';
+                completedTaskArr = removeTaskFromArray(completedTaskArr, taskEl.outerHTML);
+                allTasksArr[taskIndex].completed = false;
             }
         });
-    });
+    }
+}
+
+function removeTaskFromArray(array, taskHtml) {
+    const newArray = [];
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].html !== taskHtml) {
+            newArray.push(array[i]);
+        }
+    }
+    return newArray;
+}
+
+compTasksBtn.addEventListener('click', function (e) {
+    listEl.innerHTML = '';
+    for (let i = 0; i < completedTaskArr.length; i++) {
+        listEl.innerHTML += completedTaskArr[i].html;
+    }
+    // Attach event listeners to existing tasks
+    attachTaskEventListeners();
+});
+
+allTasksBtn.addEventListener('click', function (e) {
+    listEl.innerHTML = '';
+    for (let i = 0; i < allTasksArr.length; i++) {
+        listEl.innerHTML += allTasksArr[i].html;
+    }
+
+    // Reattach event listeners to the tasks
+    attachTaskEventListeners();
 });
